@@ -1,4 +1,4 @@
-package com.gd.reservationservices.infrastructure.user.user.performance.value;
+package com.gd.reservationservices.infrastructure.performance.value;
 
 public enum Category {
     MUSICAL,

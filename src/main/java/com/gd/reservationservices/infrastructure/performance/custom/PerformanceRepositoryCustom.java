@@ -1,4 +1,4 @@
-package com.gd.reservationservices.infrastructure.user.user.performance.custom;
+package com.gd.reservationservices.infrastructure.performance.custom;
 
 import com.gd.reservationservices.domain.performance.Performance;
 

@@ -6,7 +6,7 @@ import com.gd.reservationservices.application.user.dto.UpdateUser;
 import com.gd.reservationservices.application.user.dto.UpdateUserCommend;
 import com.gd.reservationservices.application.user.exception.UserNotFoundException;
 import com.gd.reservationservices.domain.user.User;
-import com.gd.reservationservices.infrastructure.user.user.UserRepository;
+import com.gd.reservationservices.infrastructure.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

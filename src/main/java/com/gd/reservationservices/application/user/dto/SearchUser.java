@@ -1,7 +1,7 @@
 package com.gd.reservationservices.application.user.dto;
 
 import com.gd.reservationservices.domain.user.User;
-import com.gd.reservationservices.infrastructure.user.user.value.Role;
+import com.gd.reservationservices.infrastructure.user.value.Role;
 
 public record SearchUser(
     String userId,

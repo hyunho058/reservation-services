@@ -1,4 +1,4 @@
-package com.gd.reservationservices.infrastructure.user.user.performance;
+package com.gd.reservationservices.infrastructure.performance;
 
 import com.gd.reservationservices.domain.performance.Place;
 import org.springframework.data.jpa.repository.JpaRepository;

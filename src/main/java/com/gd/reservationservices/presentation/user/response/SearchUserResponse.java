@@ -1,7 +1,7 @@
 package com.gd.reservationservices.presentation.user.response;
 
 import com.gd.reservationservices.application.user.dto.SearchUser;
-import com.gd.reservationservices.infrastructure.user.user.value.Role;
+import com.gd.reservationservices.infrastructure.user.value.Role;
 
 public record SearchUserResponse(
     String userId,

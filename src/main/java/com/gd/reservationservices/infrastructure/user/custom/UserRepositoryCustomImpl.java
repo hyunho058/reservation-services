@@ -1,4 +1,4 @@
-package com.gd.reservationservices.infrastructure.user.user.custom;
+package com.gd.reservationservices.infrastructure.user.custom;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;

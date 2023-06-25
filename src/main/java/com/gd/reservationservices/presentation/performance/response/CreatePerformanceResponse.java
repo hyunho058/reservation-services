@@ -2,9 +2,8 @@ package com.gd.reservationservices.presentation.performance.response;
 
 import com.gd.reservationservices.application.performance.dto.CreatePerformance;
 import com.gd.reservationservices.application.performance.dto.PerformancePlace;
-import com.gd.reservationservices.domain.performance.Performance;
-import com.gd.reservationservices.infrastructure.user.user.performance.value.Category;
-import com.gd.reservationservices.infrastructure.user.user.performance.value.FilmRating;
+import com.gd.reservationservices.infrastructure.performance.value.Category;
+import com.gd.reservationservices.infrastructure.performance.value.FilmRating;
 
 import java.time.LocalDateTime;
 
