@@ -1,6 +1,7 @@
 package com.gd.reservationservices.application.user.exception;
 
-import com.gd.reservationservices.application.exception.ErrorCodeException;
+
+import com.gd.reservationservices.common.exception.ErrorCodeException;
 
 public class UserNotFoundException extends ErrorCodeException {
     public UserNotFoundException() {
