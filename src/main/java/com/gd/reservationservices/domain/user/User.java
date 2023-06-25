@@ -3,6 +3,9 @@ package com.gd.reservationservices.domain.user;
 import com.gd.reservationservices.domain.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
+import org.springframework.data.annotation.CreatedDate;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Getter

@@ -2,7 +2,11 @@ package com.gd.reservationservices.presentation.response;
 
 
 import com.gd.reservationservices.application.exception.ErrorCodeException;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
+@Getter
+@AllArgsConstructor
 public class ErrorResponse {
     private final Meta meta;
 
