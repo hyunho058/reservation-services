@@ -1,0 +1,35 @@
+### POST 쿠폰 생성
+POST http://localhost:8080/business/coupons
+Content-Type: application/json
+
+{
+  "performanceId": 1,
+  "type": "PERCENT",
+  "value": 10,
+  "expiredAt": "2022-06-30 00:00:00",
+  "amount": 10
+}
+
+### GET 쿠폰 단건 조회
+GET http://localhost:8080/business/coupons/1
+Accept: application/json
+
+### PUT 쿠폰 수정
+PUT http://localhost:8080/business/coupons/1
+Content-Type: application/json
+
+{
+  "performanceId": 1,
+  "type": "PERCENT",
+  "value": 50,
+  "expiredAt": "2022-06-30 00:00:00"
+}
+
+### PUT 쿠폰 사용
+PUT http://localhost:8080/customer/coupons/3
+Content-Type: application/json
+
+### DELETE 쿠폰 삭제
+DELETE http://localhost:8080/business/coupons/3
+Content-Type: application/json
+
