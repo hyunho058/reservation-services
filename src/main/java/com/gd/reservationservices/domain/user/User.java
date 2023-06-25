@@ -3,6 +3,9 @@ package com.gd.reservationservices.domain.user;
 import com.gd.reservationservices.domain.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
+import org.springframework.data.annotation.CreatedDate;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -34,5 +37,27 @@ public class User extends BaseTimeEntity {
     private Role role;
 
     protected User() {
+    }
+
+    public User(String userId,
+                String userPw,
+                String name,
+                int agw,
+                String email,
+                String phone,
+                Role role) {
+        this.userId = userId;
+        this.userPw = userPw;
+        this.name = name;
+        this.agw = agw;
+        this.email = email;
+        this.phone = phone;
+        this.role = role;
+    }
+
+    public void updateInformation(String userPw, String name, int age) {
+        this.userPw = userPw;
+        this.name = name;
+        this.agw = age;
     }
 }
