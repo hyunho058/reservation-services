@@ -26,8 +26,8 @@ public class PerformanceController {
     }
 
     @GetMapping("/business/{id}")
-    public SingleResponse<FindPerformanceResponse> find(@PathVariable Long id) {
-        FindPerformance findPerformance = performanceService.find(id);
+    public SingleResponse<FindPerformanceResponse> getPerformance(@PathVariable Long id) {
+        FindPerformance findPerformance = performanceService.getById(id);
 
         return new SingleResponse.Ok<>(
             new FindPerformanceResponse(findPerformance)

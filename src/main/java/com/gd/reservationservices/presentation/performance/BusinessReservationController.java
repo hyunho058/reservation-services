@@ -24,7 +24,7 @@ public class BusinessReservationController {
     @ResponseStatus(HttpStatus.OK)
     public ListResponse<ReservationResponse> getAllReservations(@PathVariable Long performanceId,
                                                                 PagingRequest pagingRequest) {
-        Page<Reservation> reservation = reservationService.getAllReservations(performanceId, pagingRequest.toPageable());
+        Page<Reservation> reservation = reservationService.getAll(performanceId, pagingRequest.toPageable());
 
         return new ListResponse.Ok<>(
             reservation.get().map(ReservationResponse::new).collect(Collectors.toList()),
@@ -41,7 +41,7 @@ public class BusinessReservationController {
     @ResponseStatus(HttpStatus.OK)
     public SingleResponse<ReservationResponse> getReservation(@PathVariable Long performanceId,
                                                               @PathVariable Long reservationId) {
-        Reservation reservation = reservationService.getReservation(performanceId, reservationId);
+        Reservation reservation = reservationService.getById(performanceId, reservationId);
 
         return new SingleResponse.Ok<>(
             new ReservationResponse(reservation)

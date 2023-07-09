@@ -17,7 +17,7 @@ public class CustomerReservationController {
     @ResponseStatus(HttpStatus.OK)
     public EmptyResponse createReservation(@PathVariable Long performanceId,
                                            @RequestBody ReservationCreateRequest request) {
-        reservationService.createReservation(performanceId, request.toValue());
+        reservationService.create(performanceId, request.toValue());
 
         return new EmptyResponse.Ok<>();
     }

@@ -29,7 +29,7 @@ public class ReservationService {
     private final UserRepository userRepository;
 
     @Transactional
-    public void createReservation(Long performanceId, ReservationCreateValue requestValue) {
+    public void create(Long performanceId, ReservationCreateValue requestValue) {
         Performance performance = performanceRepository.findById(performanceId)
             .orElseThrow(PerformanceNotFoundException::new);
 
@@ -56,14 +56,14 @@ public class ReservationService {
         seat.reserve();
     }
 
-    public Page<Reservation> getAllReservations(Long performanceId, Pageable pageable) {
+    public Page<Reservation> getAll(Long performanceId, Pageable pageable) {
         Performance performance = performanceRepository.findById(performanceId)
             .orElseThrow(PerformanceNotFoundException::new);
 
         return reservationRepository.findAllByPerformance(performance, pageable);
     }
 
-    public Reservation getReservation(Long performanceId, Long reservationId) {
+    public Reservation getById(Long performanceId, Long reservationId) {
         Reservation reservation = reservationRepository.findById(reservationId)
             .orElseThrow(ReservationNotFoundException::new);
 

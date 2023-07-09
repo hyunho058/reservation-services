@@ -30,7 +30,7 @@ public class BusinessCouponController {
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public SingleResponse<Coupon> getCoupon(@PathVariable Long id) {
-        return new SingleResponse.Ok<>(couponService.findById(id));
+        return new SingleResponse.Ok<>(couponService.getById(id));
     }
 
     @PutMapping("/{id}")
@@ -43,7 +43,7 @@ public class BusinessCouponController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public EmptyResponse updateCoupon(@PathVariable Long id) {
+    public EmptyResponse deleteCoupon(@PathVariable Long id) {
         couponService.delete(id);
         return new EmptyResponse.Ok<>();
     }

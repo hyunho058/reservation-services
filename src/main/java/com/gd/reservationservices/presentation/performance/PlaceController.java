@@ -17,7 +17,7 @@ public class PlaceController {
 
     @PostMapping
     public EmptyResponse createPlace(@RequestBody CreatePlaceRequest createPlaceRequest) {
-        placeService.createPlace(createPlaceRequest.toVValue());
+        placeService.create(createPlaceRequest.toVValue());
 
         return new EmptyResponse.Ok<>();
     }

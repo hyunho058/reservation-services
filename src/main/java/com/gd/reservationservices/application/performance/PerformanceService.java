@@ -61,7 +61,7 @@ public class PerformanceService {
         );
     }
 
-    public FindPerformance find(Long id) {
+    public FindPerformance getById(Long id) {
         Performance performance = performanceRepository.findPerformanceAndPlace(id)
             .orElseThrow(() -> new IllegalArgumentException("공연 정보가 존재하지 않습니다."));
 
