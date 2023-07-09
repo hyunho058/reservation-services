@@ -26,8 +26,8 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public SingleResponse<SearchUserResponse> searchUser(@PathVariable Long id) {
-        SearchUser searchUser = userService.searchUser(id);
+    public SingleResponse<SearchUserResponse> getUser(@PathVariable Long id) {
+        SearchUser searchUser = userService.getById(id);
 
         SearchUserResponse searchUserResponse = new SearchUserResponse(searchUser);
 
@@ -35,8 +35,8 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public SingleResponse<UpdateUserResponse> update(@PathVariable Long id,
-                                                     @RequestBody UpdateUserRequest updateUserRequest) {
+    public SingleResponse<UpdateUserResponse> updateUser(@PathVariable Long id,
+                                                         @RequestBody UpdateUserRequest updateUserRequest) {
         UpdateUser updateUser = userService.update(id, updateUserRequest.toValue());
 
         return new SingleResponse.Ok<>(
