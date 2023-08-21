@@ -1,12 +1,15 @@
 package com.reservation.presentation.user;
 
 import com.reservation.application.user.UserService;
+import com.reservation.application.user.dto.SavedUserValue;
 import com.reservation.application.user.dto.SearchUserResult;
 import com.reservation.application.user.dto.UpdateUserResult;
 import com.reservation.common.response.EmptyResponse;
 import com.reservation.common.response.SingleResponse;
-import com.reservation.presentation.user.reqeust.UpdateUserRequest;
+import com.reservation.domain.user.User;
+import com.reservation.presentation.user.request.UpdateUserRequest;
 import com.reservation.presentation.user.request.CreateUserRequest;
+import com.reservation.presentation.user.response.SavedUserResponse;
 import com.reservation.presentation.user.response.SearchUserResponse;
 import com.reservation.presentation.user.response.UpdateUserResponse;
 import lombok.RequiredArgsConstructor;
@@ -25,10 +28,11 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping()
-    public EmptyResponse join(@RequestBody CreateUserRequest createUserRequest) {
-        userService.joinBusinessUser(createUserRequest.toValue());
+    public SingleResponse<SavedUserResponse> join(@RequestBody CreateUserRequest createUserRequest) {
+        SavedUserValue savedUser = userService.join(createUserRequest.toValue());
+        SavedUserResponse savedUserResponse = new SavedUserResponse(savedUser);
 
-        return new EmptyResponse.Ok<>();
+        return new SingleResponse.Ok<>(savedUserResponse);
     }
 
     @GetMapping("/{id}")
