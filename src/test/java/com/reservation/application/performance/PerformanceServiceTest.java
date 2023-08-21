@@ -4,24 +4,19 @@ import com.reservation.IntegrationTestSupport;
 import com.reservation.application.performance.dto.CreatePerformanceResult;
 import com.reservation.application.performance.dto.CreatePerformanceValue;
 import com.reservation.application.performance.dto.PerformancePlace;
+import com.reservation.application.performance.dto.SearchPerformanceResult;
 import com.reservation.domain.performance.Place;
-import com.reservation.domain.performance.repository.PerformanceJdbcRepository;
 import com.reservation.domain.performance.repository.PlaceRepository;
-import com.reservation.presentation.performance.request.CreatePerformanceRequest;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentMatchers;
 import org.mockito.BDDMockito;
-import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.BDDMockito.*;
 
 class PerformanceServiceTest extends IntegrationTestSupport {
     @Autowired
@@ -59,6 +54,7 @@ class PerformanceServiceTest extends IntegrationTestSupport {
                         new CreatePerformanceValue.SeatValue("C", 100)
                 )
         );
+
         //when
         CreatePerformanceResult createPerformanceResult = performanceService.create(createPerformanceValue);
 
@@ -66,5 +62,15 @@ class PerformanceServiceTest extends IntegrationTestSupport {
         assertThat(createPerformanceResult)
                 .extracting("place", "startAt", "endAt", "startReservationAt", "endReservationAt", "category", "title", "content", "acting", "filmRating")
                 .contains(new PerformancePlace(savedPlace), startTime, endTime, bookingStartDate, bookingEndDate, "CLASSIC", "공연 이름", "공연 내용", "출연진", "ALL");
+    }
+
+    @DisplayName("공연 정보를 조회한다.")
+    @Test
+    void searchBy() {
+        //given
+
+
+        //when
+        //then
     }
 }

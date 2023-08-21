@@ -3,6 +3,7 @@ package com.reservation.presentation.performance;
 import com.reservation.application.performance.dto.CreatePerformanceResult;
 import com.reservation.application.performance.dto.CreatePerformanceValue;
 import com.reservation.application.performance.dto.PerformancePlace;
+import com.reservation.application.performance.dto.SearchPerformanceResult;
 import com.reservation.presentation.ControllerTestSupport;
 import com.reservation.presentation.performance.request.CreatePerformanceRequest;
 import org.junit.jupiter.api.DisplayName;
@@ -72,6 +73,42 @@ class PerformanceControllerTest extends ControllerTestSupport {
                         .content(objectMapper.writeValueAsString(request))
                         .contentType(MediaType.APPLICATION_JSON)
                 )
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isOk());
+    }
+
+    @DisplayName("공연 정보를 조회 한다.")
+    @Test
+    void searchBy() throws Exception{
+        //given
+        Long id = 1L;
+        LocalDateTime startTime = LocalDateTime.of(2023, 8, 20, 14, 0, 0);
+
+        LocalDateTime bookingStartDate = LocalDateTime.of(2023, 8, 1, 0, 0, 0);
+        LocalDateTime bookingEndDate = LocalDateTime.of(2023, 8, 19, 23, 59, 59);
+
+        LocalDateTime createdAt = LocalDateTime.of(2023, 8, 1, 0, 0, 0);
+        LocalDateTime updatedAt = LocalDateTime.of(2023, 8, 1, 0, 0, 0);
+
+        given(performanceService.searchBy(any(Long.class)))
+                .willReturn(new SearchPerformanceResult(
+                        id,
+                        new PerformancePlace("공연장", "공연장 주소"),
+                        "CLASSIC",
+                        startTime,
+                        bookingStartDate,
+                        bookingEndDate,
+                        createdAt,
+                        updatedAt,
+                        "제목",
+                        "내용",
+                        "출연진",
+                        "ALL"
+                ));
+
+        //when
+        //then
+        mockMvc.perform(MockMvcRequestBuilders.get("/performance/business/{id}", id))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }
