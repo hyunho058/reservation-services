@@ -45,19 +45,19 @@ public class PerformanceService {
                     .collect(Collectors.toList())
             );
 
-        if (!performanceSeats.seatRegistrationAvailable(place.getMaxSeat())) {
+        if (performanceSeats.seatRegistrationNotPossible(place.getMaxSeat())) {
             throw new IllegalArgumentException(ErrorCode.PERFORMANCE_EXCEED_MAX_SEAT_ON_PLACE.name());
         }
 
-        Performance newPerformance = createPerformanceValue.toEntity(place);
-        performanceRepository.save(newPerformance);
+        Performance savedPerformance =
+                performanceRepository.save(createPerformanceValue.toEntity(place));
 
         performanceJdbcRepository.saveAll(
-            performanceSeats.getSeats(newPerformance.getId())
+            performanceSeats.getSeats(savedPerformance.getId())
         );
 
         return new CreatePerformanceResult(
-            newPerformance,
+            savedPerformance,
             new PerformancePlace(place)
         );
     }

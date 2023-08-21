@@ -6,12 +6,13 @@ import java.util.List;
 public class PerformanceSeatGroups {
     private final List<SeatInfo> performanceSeats;
 
-    public boolean seatRegistrationAvailable(int maxSeats) {
+
+    public boolean seatRegistrationNotPossible(int maxSeats) {
         int sumSeats = performanceSeats.stream()
             .mapToInt(s -> s.seatCount)
             .sum();
 
-        return maxSeats >= sumSeats;
+        return maxSeats < sumSeats;
     }
 
     public List<Seat> getSeats(Long performanceId) {
