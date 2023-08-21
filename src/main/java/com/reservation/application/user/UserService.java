@@ -1,6 +1,7 @@
 package com.reservation.application.user;
 
 import com.reservation.application.user.command.CreateUser;
+import com.reservation.application.user.dto.SavedUserValue;
 import com.reservation.application.user.dto.SearchUserResult;
 import com.reservation.application.user.dto.UpdateUserResult;
 import com.reservation.application.user.dto.UpdateUserValue;
@@ -18,12 +19,14 @@ public class UserService {
     private final UserRepository userRepository;
 
     @Transactional
-    public void joinBusinessUser(CreateUser createUser) {
+    public SavedUserValue join(CreateUser createUser) {
         if (userRepository.exists(createUser.userId())) {
             throw new IllegalArgumentException(ErrorCode.ALREADY_REGISTERED_USER.name());
         }
 
-        userRepository.save(createUser.toEntity());
+        User savedUser = userRepository.save(createUser.toEntity());
+
+        return new SavedUserValue(savedUser);
     }
 
     public SearchUserResult searchBy(Long id) {
