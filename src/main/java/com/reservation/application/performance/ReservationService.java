@@ -35,7 +35,9 @@ public class ReservationService {
             .orElseThrow(() -> new IllegalArgumentException(ErrorCode.PERFORMANCE_NOT_FOUND.name()));
 
         Seat seat = seatRepository.findByPerformanceIdAndLocationAndNumber(
-            performanceId, requestValue.seatLocation(), requestValue.seatNumber()
+            performanceId,
+            requestValue.seatLocation(),
+            requestValue.seatNumber()
         ).orElseThrow(() -> new IllegalArgumentException(ErrorCode.SEAT_NOT_FOUND.name()));
 
         if (seat.isReserved()) {
