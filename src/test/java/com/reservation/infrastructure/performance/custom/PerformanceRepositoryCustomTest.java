@@ -174,4 +174,48 @@ class PerformanceRepositoryCustomTest extends IntegrationTestSupport {
         //then
         assertThat(existsPerformance).isFalse();
     }
+
+    @DisplayName("공연정보와 공연장 정보를 조회한다.")
+    @Test
+    void findPerformanceAndPlace() {
+        //given
+        LocalDateTime startTime = LocalDateTime.of(2023, 8, 20, 14, 0, 0);
+        LocalDateTime endTime = LocalDateTime.of(2023, 8, 20, 16, 30, 0);
+
+        LocalDateTime bookingStartDate = LocalDateTime.of(2023, 8, 1, 0, 0, 0);
+        LocalDateTime bookingEndDate = LocalDateTime.of(2023, 8, 19, 23, 59, 59);
+
+        Place newPlace = new Place("공연장 이름", "공연장 주소", 500);
+        Place savedPlace = placeRepository.save(newPlace);
+
+        Performance newPerformance = new Performance(
+                savedPlace,
+                Performance.Category.CLASSIC,
+                startTime,
+                endTime,
+                bookingStartDate,
+                bookingEndDate,
+                "공연 이름",
+                "공연 내용",
+                "출연진",
+                Performance.FilmRating.ALL,
+                50000,
+                null,
+                null
+        );
+        Performance savedPerformance = performanceRepository.save(newPerformance);
+        Long id = savedPerformance.getId();
+
+        //when
+        Performance performance = performanceRepository.findPerformanceAndPlace(id)
+                .orElseThrow(() -> new IllegalArgumentException("not found"));
+
+        //then
+        assertThat(performance)
+                .extracting("category", "startAt", "endAt", "startReservationAt", "endReservationAt", "title", "content", "acting", "filmRating", "price")
+                .contains(Performance.Category.CLASSIC, startTime, endTime, bookingStartDate, bookingEndDate, "공연 이름", "공연 내용", "출연진",Performance.FilmRating.ALL, 50000);
+        assertThat(performance.getPlace())
+                .extracting("name", "location", "maxSeat")
+                .contains("공연장 이름", "공연장 주소", 500);
+    }
 }

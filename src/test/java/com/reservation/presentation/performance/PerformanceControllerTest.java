@@ -8,7 +8,6 @@ import com.reservation.presentation.ControllerTestSupport;
 import com.reservation.presentation.performance.request.CreatePerformanceRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.BDDMockito;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
@@ -18,7 +17,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.*;
+import static org.mockito.BDDMockito.given;
 
 class PerformanceControllerTest extends ControllerTestSupport {
     @DisplayName("공연 정보를 등록한다.")
