@@ -4,16 +4,20 @@ import com.reservation.application.performance.dto.CreateReservationResult;
 import com.reservation.application.performance.dto.CreateReservationValue;
 import com.reservation.application.performance.dto.SearchReservationListResult;
 import com.reservation.application.performance.dto.SearchReservationResult;
+import com.reservation.application.performance.exception.AlreadyReservedSeatException;
+import com.reservation.application.performance.value.LockKey;
 import com.reservation.common.exception.ErrorCode;
 import com.reservation.domain.performance.Performance;
 import com.reservation.domain.performance.Reservation;
 import com.reservation.domain.performance.Seat;
+import com.reservation.domain.performance.repository.LockRepository;
 import com.reservation.domain.performance.repository.PerformanceRepository;
 import com.reservation.domain.performance.repository.ReservationRepository;
 import com.reservation.domain.performance.repository.SeatRepository;
 import com.reservation.domain.user.User;
 import com.reservation.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,9 +32,23 @@ public class ReservationService {
     private final ReservationRepository reservationRepository;
     private final SeatRepository seatRepository;
     private final UserRepository userRepository;
+    private final LockRepository lockRepository;
+    private final ApplicationEventPublisher eventPublisher;
 
     @Transactional
     public CreateReservationResult create(Long performanceId, CreateReservationValue requestValue) {
+        LockKey lockKey =
+            new LockKey(
+                performanceId,
+                requestValue.seatLocation(),
+                requestValue.seatNumber()
+            );
+
+        if (!lockRepository.lock(lockKey.combination(), lockKey.combination())){
+            throw new AlreadyReservedSeatException();
+        }
+        eventPublisher.publishEvent(lockKey.combination());
+
         Performance performance = performanceRepository.findById(performanceId)
             .orElseThrow(() -> new IllegalArgumentException(ErrorCode.PERFORMANCE_NOT_FOUND.name()));
 
