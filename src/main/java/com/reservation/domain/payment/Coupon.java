@@ -46,10 +46,11 @@ public class Coupon extends BaseTimeEntity {
 
 
     public Coupon(Performance performance,
+                  String code,
                   Type type,
                   Integer value,
                   LocalDateTime expiredAt) {
-        this(null, performance, UUID.randomUUID().toString(), type, value, null, expiredAt);
+        this(null, performance, code, type, value, null, expiredAt);
     }
 
     public enum Type {
