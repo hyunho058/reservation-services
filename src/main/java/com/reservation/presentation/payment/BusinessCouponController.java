@@ -1,6 +1,8 @@
 package com.reservation.presentation.payment;
 
 import com.reservation.application.payment.CouponService;
+import com.reservation.application.payment.dto.SearchCouponResult;
+import com.reservation.application.payment.dto.UpdateCouponResult;
 import com.reservation.common.response.EmptyResponse;
 import com.reservation.common.response.ListResponse;
 import com.reservation.common.response.SingleResponse;
@@ -8,6 +10,7 @@ import com.reservation.presentation.payment.request.CreateCouponRequest;
 import com.reservation.presentation.payment.request.UpdateCouponRequest;
 import com.reservation.presentation.payment.response.CreateCouponResponse;
 import com.reservation.presentation.payment.response.SearchCouponResponse;
+import com.reservation.presentation.payment.response.UpdateCouponResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -45,16 +48,22 @@ public class BusinessCouponController {
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public SingleResponse<SearchCouponResponse> search(@PathVariable Long id) {
-        SearchCouponResponse result = new SearchCouponResponse(couponService.search(id));
-        return new SingleResponse.Ok<>(result);
+        SearchCouponResult result = couponService.search(id);
+
+        return new SingleResponse.Ok<>(
+                new SearchCouponResponse(result)
+        );
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public EmptyResponse update(@PathVariable Long id,
-                                @RequestBody UpdateCouponRequest request) {
-        couponService.update(request.toValue(id));
-        return new EmptyResponse.Ok<>();
+    public SingleResponse<UpdateCouponResponse> update(@PathVariable Long id,
+                                                       @RequestBody UpdateCouponRequest request) {
+        UpdateCouponResult result = couponService.update(request.toValue(id));
+
+        return new SingleResponse.Ok<>(
+                new UpdateCouponResponse(result)
+        );
     }
 
     @DeleteMapping("/{id}")

@@ -63,6 +63,16 @@ public class Coupon extends BaseTimeEntity {
         WON
     }
 
+    public boolean isOverDiscountValue(int value) {
+        if (Type.PERCENT.equals(this.type)) {
+            return value > 100;
+        }
+        if (Type.WON.equals(this.type)) {
+            return value > this.performance.getPrice();
+        }
+        return false;
+    }
+
     public Coupon delete() {
         this.expiredAt = LocalDateTime.now();
         return this;
