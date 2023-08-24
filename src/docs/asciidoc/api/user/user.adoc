@@ -1,0 +1,35 @@
+[[user-join]]
+=== 신규 사용자 회원가입
+
+==== HTTP Request
+include::{snippets}/user-join/http-request.adoc[]
+include::{snippets}/user-join/request-fields.adoc[]
+
+==== HTTP Response
+include::{snippets}/user-join/http-response.adoc[]
+include::{snippets}/user-join/response-fields.adoc[]
+
+[[user-search]]
+=== 사용자 조회
+
+==== HTTP Request
+include::{snippets}/user-search/http-request.adoc[]
+include::{snippets}/user-search/httpie-request.adoc[]
+
+==== HTTP Response
+include::{snippets}/user-search/http-response.adoc[]
+include::{snippets}/user-search/response-fields.adoc[]
+
+[[user-update]]
+=== 사용자 정보 수정
+
+==== HTTP Request
+include::{snippets}/user-update/http-request.adoc[]
+include::{snippets}/user-update/httpie-request.adoc[]
+include::{snippets}/user-update/path-parameters.adoc[]
+include::{snippets}/user-update/request-fields.adoc[]
+
+==== HTTP Response
+include::{snippets}/user-update/http-response.adoc[]
+include::{snippets}/user-update/response-fields.adoc[]
+
