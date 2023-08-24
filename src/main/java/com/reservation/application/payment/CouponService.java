@@ -5,6 +5,7 @@ import com.reservation.application.payment.command.UpdateCouponValue;
 import com.reservation.application.payment.dto.CreateCouponResult;
 import com.reservation.application.payment.dto.SearchCouponResult;
 import com.reservation.application.payment.dto.UpdateCouponResult;
+import com.reservation.application.payment.dto.UseCouponResult;
 import com.reservation.application.payment.value.SerialNumberGenerator;
 import com.reservation.common.exception.ErrorCode;
 import com.reservation.domain.payment.Coupon;
@@ -15,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -70,11 +72,15 @@ public class CouponService {
     }
 
     @Transactional
-    public void use(Long id) {
+    public UseCouponResult use(Long id, LocalDateTime useTime) {
         Coupon coupon = couponRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException(ErrorCode.COUPON_NOT_FOUND.name()));
 
-        couponRepository.save(coupon.use());
+        Coupon usedCoupon = couponRepository.save(
+                coupon.use(useTime)
+        );
+
+        return new UseCouponResult(usedCoupon);
     }
 
     @Transactional

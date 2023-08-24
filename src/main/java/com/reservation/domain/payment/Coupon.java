@@ -89,8 +89,8 @@ public class Coupon extends BaseTimeEntity {
         return this;
     }
 
-    public Coupon use() {
-        this.usedAt = LocalDateTime.now();
+    public Coupon use(LocalDateTime useTime) {
+        this.usedAt = useTime;
         return this;
     }
 

@@ -5,6 +5,7 @@ import com.reservation.application.payment.command.CreateCouponValue;
 import com.reservation.application.payment.command.UpdateCouponValue;
 import com.reservation.application.payment.dto.CreateCouponResult;
 import com.reservation.application.payment.dto.UpdateCouponResult;
+import com.reservation.application.payment.dto.UseCouponResult;
 import com.reservation.common.exception.ErrorCode;
 import com.reservation.domain.payment.Coupon;
 import com.reservation.domain.payment.repository.CouponRepository;
@@ -227,5 +228,52 @@ class CouponServiceTest extends IntegrationTestSupport {
         assertThat(result)
                 .extracting("performanceTitle", "serialNumber", "type", "discountValue")
                 .contains("공연 이름", "AAA1234-1234-1234", "WON", 10000);
+    }
+
+    @DisplayName("")
+    @Test
+    void use() {
+        //given
+        LocalDateTime startTime = LocalDateTime.of(2023, 8, 20, 14, 0, 0);
+        LocalDateTime endTime = LocalDateTime.of(2023, 8, 20, 16, 30, 0);
+
+        LocalDateTime bookingStartDate = LocalDateTime.of(2023, 8, 1, 0, 0, 0);
+        LocalDateTime bookingEndDate = LocalDateTime.of(2023, 8, 19, 23, 59, 59);
+        Place newPlace = new Place("공연장 이름", "공연장 주소", 500);
+        Place savedPlace = placeRepository.save(newPlace);
+
+        Performance performance = new Performance(
+                savedPlace,
+                Performance.Category.CLASSIC,
+                startTime,
+                endTime,
+                bookingStartDate,
+                bookingEndDate,
+                "공연 이름",
+                "공연 내용",
+                "출연진",
+                Performance.FilmRating.ALL,
+                50000,
+                null,
+                null
+        );
+        Performance savedPerformance = performanceRepository.save(performance);
+        Long performanceId = savedPerformance.getId();
+        LocalDateTime expiredTime = LocalDateTime.of(2023, 8, 19, 23, 59, 59);
+
+        Coupon newCoupon =
+                new Coupon(savedPerformance, "AAA1234-1234-1234", Coupon.Type.PERCENT, 10, expiredTime);
+        Coupon savedCoupon = couponRepository.save(newCoupon);
+
+        Long couponId = savedCoupon.getId();
+        LocalDateTime useTIme = LocalDateTime.of(2023, 8, 12, 21, 20, 0);
+
+        //when
+        UseCouponResult result = couponService.use(couponId, useTIme);
+
+        //then
+        assertThat(result)
+                .extracting("serialNumber", "type", "discountValue", "usedAt", "expiredAt")
+                .contains("AAA1234-1234-1234", "PERCENT", 10, useTIme, expiredTime);
     }
 }
