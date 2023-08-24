@@ -1,7 +1,7 @@
 package com.reservation.application.payment;
 
-import com.reservation.application.payment.command.CreateCouponValue;
-import com.reservation.application.payment.command.UpdateCouponValue;
+import com.reservation.application.payment.dto.CreateCouponValue;
+import com.reservation.application.payment.dto.UpdateCouponValue;
 import com.reservation.application.payment.dto.CreateCouponResult;
 import com.reservation.application.payment.dto.SearchCouponResult;
 import com.reservation.application.payment.dto.UpdateCouponResult;

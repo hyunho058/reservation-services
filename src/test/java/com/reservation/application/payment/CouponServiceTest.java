@@ -1,8 +1,8 @@
 package com.reservation.application.payment;
 
 import com.reservation.IntegrationTestSupport;
-import com.reservation.application.payment.command.CreateCouponValue;
-import com.reservation.application.payment.command.UpdateCouponValue;
+import com.reservation.application.payment.dto.CreateCouponValue;
+import com.reservation.application.payment.dto.UpdateCouponValue;
 import com.reservation.application.payment.dto.CreateCouponResult;
 import com.reservation.application.payment.dto.UpdateCouponResult;
 import com.reservation.application.payment.dto.UseCouponResult;
@@ -13,7 +13,6 @@ import com.reservation.domain.performance.Performance;
 import com.reservation.domain.performance.Place;
 import com.reservation.domain.performance.repository.PerformanceRepository;
 import com.reservation.domain.performance.repository.PlaceRepository;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
