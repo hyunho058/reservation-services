@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 public record CreateCouponRequest(
         Long performanceId,
         Coupon.Type type,
-        Integer value,
+        Integer discountValue,
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
         LocalDateTime expiredAt,
         Integer amount) {
@@ -18,7 +18,7 @@ public record CreateCouponRequest(
         return new CreateCouponValue(
                 this.performanceId(),
                 this.type,
-                this.value(),
+                this.discountValue(),
                 this.expiredAt(),
                 this.amount()
         );
