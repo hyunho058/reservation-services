@@ -14,9 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,16 +25,16 @@ public class CouponService {
     private final PerformanceRepository performanceRepository;
 
     @Transactional
-    public List<CreateCouponResult> create(CreateCouponValue command) {
-        Performance performance = performanceRepository.findById(command.performanceId())
+    public List<CreateCouponResult> create(CreateCouponValue value) {
+        Performance performance = performanceRepository.findById(value.performanceId())
                 .orElseThrow(() -> new IllegalArgumentException(ErrorCode.PERFORMANCE_NOT_FOUND.name()));
 
-        if (!discountTypePolicy(command.type(), command.value(), performance.getPrice())){
+        if (discountTypePolicy(value.type(), value.discountValue(), performance.getPrice())){
             throw new IllegalArgumentException(ErrorCode.COUPON_DISCOUNT_NOT_AVAILABLE_EXCEED_PERFORMANCE_PRICE.name());
         }
 
-        SerialNumberGenerator serialNumberGenerator = new SerialNumberGenerator(command.amount());
-        List<Coupon> coupons = getCoupons(command, performance, serialNumberGenerator.getList());
+        SerialNumberGenerator serialNumberGenerator = new SerialNumberGenerator(value.amount());
+        List<Coupon> coupons = getCoupons(value, performance, serialNumberGenerator.getList());
 
         return couponRepository.saveAll(coupons)
                 .stream().map(CreateCouponResult::new)
@@ -104,7 +102,7 @@ public class CouponService {
                         performance,
                         serialNumber,
                         command.type(),
-                        command.value(),
+                        command.discountValue(),
                         command.expiredAt()
                 )).toList();
     }

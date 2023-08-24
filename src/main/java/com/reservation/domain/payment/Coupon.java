@@ -15,7 +15,6 @@ import jakarta.persistence.ManyToOne;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Getter
 @Entity
@@ -29,14 +28,14 @@ public class Coupon extends BaseTimeEntity {
     private Performance performance;
 
     @Column(nullable = false)
-    private String code;
+    private String serialNumber;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Type type;
 
     @Column(nullable = false)
-    private Integer value;
+    private Integer discountValue;
 
     @Column
     private LocalDateTime usedAt;
@@ -46,11 +45,17 @@ public class Coupon extends BaseTimeEntity {
 
 
     public Coupon(Performance performance,
-                  String code,
+                  String serialNumber,
                   Type type,
-                  Integer value,
+                  Integer discountValue,
                   LocalDateTime expiredAt) {
-        this(null, performance, code, type, value, null, expiredAt);
+        this(null,
+                performance,
+                serialNumber,
+                type,
+                discountValue,
+                null,
+                expiredAt);
     }
 
     public enum Type {
@@ -69,7 +74,7 @@ public class Coupon extends BaseTimeEntity {
                          LocalDateTime expiredAt) {
         this.performance = performance;
         this.type = type;
-        this.value = value;
+        this.discountValue = value;
         this.expiredAt = expiredAt;
         return this;
     }
@@ -79,25 +84,15 @@ public class Coupon extends BaseTimeEntity {
         return this;
     }
 
-    public boolean isOverPrice(int value) {
-        if (Type.PERCENT.equals(this.type)) {
-            return value > 100;
-        }
-        if (Type.WON.equals(this.type)) {
-            return value > this.performance.getPrice();
-        }
-        return false;
-    }
-
     protected Coupon() {
     }
 
-    public Coupon(Long id, Performance performance, String code, Type type, Integer value, LocalDateTime usedAt, LocalDateTime expiredAt) {
+    public Coupon(Long id, Performance performance, String serialNumber, Type type, Integer discountValue, LocalDateTime usedAt, LocalDateTime expiredAt) {
         this.id = id;
         this.performance = performance;
-        this.code = code;
+        this.serialNumber = serialNumber;
         this.type = type;
-        this.value = value;
+        this.discountValue = discountValue;
         this.usedAt = usedAt;
         this.expiredAt = expiredAt;
     }

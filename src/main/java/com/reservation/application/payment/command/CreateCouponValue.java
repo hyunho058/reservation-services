@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 public record CreateCouponValue(
         Long performanceId,
         Coupon.Type type,
-        Integer value,
+        Integer discountValue,
         LocalDateTime expiredAt,
         Integer amount) {
 
