@@ -1,4 +1,4 @@
-package com.reservation.application.payment;
+package com.reservation.application.payment.dto;
 
 import com.reservation.domain.payment.Coupon;
 

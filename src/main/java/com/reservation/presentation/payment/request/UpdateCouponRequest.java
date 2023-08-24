@@ -1,7 +1,7 @@
 package com.reservation.presentation.payment.request;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.reservation.application.payment.command.UpdateCouponValue;
+import com.reservation.application.payment.dto.UpdateCouponValue;
 import com.reservation.domain.payment.Coupon;
 
 import java.time.LocalDateTime;

@@ -4,21 +4,21 @@ import com.reservation.domain.payment.Coupon;
 
 import java.time.LocalDateTime;
 
-public record CreateCouponResult(
+public record UseCouponResult(
         Long id,
-        String performanceTitle,
         String serialNumber,
         String type,
         Integer discountValue,
+        LocalDateTime usedAt,
         LocalDateTime expiredAt
 ) {
-    public CreateCouponResult(Coupon coupon) {
+    public UseCouponResult(Coupon coupon) {
         this(
                 coupon.getId(),
-                coupon.getPerformance().getTitle(),
                 coupon.getSerialNumber(),
                 coupon.getType().toString(),
                 coupon.getDiscountValue(),
+                coupon.getUsedAt(),
                 coupon.getExpiredAt()
         );
     }
