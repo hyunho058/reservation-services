@@ -1,0 +1,10 @@
+[[performace-create]]
+=== 공연 정보 등록
+
+==== HTTP Request
+include::{snippets}/performance-create/http-request.adoc[]
+include::{snippets}/performance-create/request-fields.adoc[]
+
+==== HTTP Response
+include::{snippets}/performance-create/http-response.adoc[]
+include::{snippets}/performance-create/response-fields.adoc[]

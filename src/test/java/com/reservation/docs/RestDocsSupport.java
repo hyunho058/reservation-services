@@ -1,6 +1,8 @@
 package com.reservation.docs;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.restdocs.RestDocumentationContextProvider;
@@ -17,6 +19,9 @@ public abstract class RestDocsSupport {
 
     @BeforeEach
     void setUp(RestDocumentationContextProvider provider) {
+        this.objectMapper.registerModule(new JavaTimeModule());
+        this.objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+
         this.mockMvc = standaloneSetup(initController())
                 .apply(documentationConfiguration(provider))
                 .build();
