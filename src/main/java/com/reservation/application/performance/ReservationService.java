@@ -36,15 +36,7 @@ public class ReservationService {
 
     @DistributedLock()
     public CreateReservationResult create(Long performanceId, CreateReservationValue requestValue) {
-        LockKey lockKey =
-            new LockKey(
-                performanceId,
-                requestValue.seatLocation(),
-                requestValue.seatNumber()
-            );
-
         System.out.println("create reservation -------------------");
-
         Performance performance = performanceRepository.findById(performanceId)
             .orElseThrow(() -> new IllegalArgumentException(ErrorCode.PERFORMANCE_NOT_FOUND.name()));
 
