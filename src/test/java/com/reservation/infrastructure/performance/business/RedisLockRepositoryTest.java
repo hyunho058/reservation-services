@@ -10,6 +10,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class RedisLockRepositoryTest extends IntegrationTestSupport {
     @Autowired
     private RedisLockRepository lockRepository;
+
     @DisplayName("동일한 key 값 이 존재하면 false를 반환한다.")
     @Test
     void redisLock() {

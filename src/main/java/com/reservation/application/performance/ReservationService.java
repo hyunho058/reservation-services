@@ -4,8 +4,8 @@ import com.reservation.application.performance.dto.CreateReservationResult;
 import com.reservation.application.performance.dto.CreateReservationValue;
 import com.reservation.application.performance.dto.SearchReservationListResult;
 import com.reservation.application.performance.dto.SearchReservationResult;
-import com.reservation.application.performance.exception.AlreadyReservedSeatException;
 import com.reservation.application.performance.value.LockKey;
+import com.reservation.common.aop.DistributedLock;
 import com.reservation.common.exception.ErrorCode;
 import com.reservation.domain.performance.Performance;
 import com.reservation.domain.performance.Reservation;
@@ -26,7 +26,6 @@ import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 public class ReservationService {
     private final PerformanceRepository performanceRepository;
     private final ReservationRepository reservationRepository;
@@ -35,7 +34,7 @@ public class ReservationService {
     private final LockRepository lockRepository;
     private final ApplicationEventPublisher eventPublisher;
 
-    @Transactional
+    @DistributedLock()
     public CreateReservationResult create(Long performanceId, CreateReservationValue requestValue) {
         LockKey lockKey =
             new LockKey(
@@ -44,10 +43,7 @@ public class ReservationService {
                 requestValue.seatNumber()
             );
 
-        if (!lockRepository.lock(lockKey.combination(), lockKey.combination())){
-            throw new AlreadyReservedSeatException();
-        }
-        eventPublisher.publishEvent(lockKey.combination());
+        System.out.println("create reservation -------------------");
 
         Performance performance = performanceRepository.findById(performanceId)
             .orElseThrow(() -> new IllegalArgumentException(ErrorCode.PERFORMANCE_NOT_FOUND.name()));
@@ -79,6 +75,7 @@ public class ReservationService {
         return new CreateReservationResult(reservation);
     }
 
+    @Transactional(readOnly = true)
     public SearchReservationListResult searchAllBy(Long performanceId, Pageable pageable) {
         Performance performance = performanceRepository.findById(performanceId)
             .orElseThrow(() -> new IllegalArgumentException(ErrorCode.PERFORMANCE_NOT_FOUND.name()));
@@ -88,6 +85,7 @@ public class ReservationService {
         );
     }
 
+    @Transactional(readOnly = true)
     public SearchReservationResult searchBy(Long performanceId, Long reservationId) {
         Reservation reservation = reservationRepository.findById(reservationId)
             .orElseThrow(() -> new IllegalArgumentException(ErrorCode.RESERVATION_NOT_FOUND.name()));
