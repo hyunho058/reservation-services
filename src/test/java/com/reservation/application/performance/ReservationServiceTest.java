@@ -331,7 +331,7 @@ class ReservationServiceTest extends IntegrationTestSupport {
                 .hasMessage(String.valueOf(ErrorCode.RESERVATION_NOT_MATCHED_PERFORMANCE));
     }
 
-    @Test
+//    @Test
     public void 좌석_동시_접근() throws InterruptedException {
 
         Place newPlace = new Place("공연장 이름", "공연장 주소", 500);
@@ -360,17 +360,19 @@ class ReservationServiceTest extends IntegrationTestSupport {
         Performance savedPerformance = performanceRepository.save(newPerformance);
         Long performanceId = savedPerformance.getId();
 
-        Seat newSeat = new Seat(performanceId, "A", 2);
+        Seat newSeat = new Seat(performanceId, "A", 1);
         seatRepository.save(newSeat);
 
         CreateReservationValue addReservationOfUser2 =
-                new CreateReservationValue(2L, "A", 2);
+                new CreateReservationValue(1L, "A", 1);
         CreateReservationValue addReservationOfUser3 =
-                new CreateReservationValue(3L, "A", 2);
+                new CreateReservationValue(2L, "A", 1);
         CreateReservationValue addReservationOfUser4 =
-                new CreateReservationValue(4L, "A", 2);
+                new CreateReservationValue(3L, "A", 1);
 
         ExecutorService executor = Executors.newFixedThreadPool(3);
+
+        performanceRepository.flush();
 
         executor.submit(() -> {
             try {

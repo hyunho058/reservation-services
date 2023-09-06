@@ -17,10 +17,11 @@ class RedisLockRepositoryTest extends IntegrationTestSupport {
         //given
         String lockKey = "test lock key";
         String lockValue = "lock";
+        Long leaseMillisTime = 3000L;
 
-        lockRepository.lock(lockKey, lockValue);
+        lockRepository.lock(lockKey, lockValue, leaseMillisTime);
         //when
-        Boolean lockStatus = lockRepository.lock(lockKey, lockValue);
+        Boolean lockStatus = lockRepository.lock(lockKey, lockValue, leaseMillisTime);
         //then
         assertThat(lockStatus).isFalse();
     }
@@ -30,8 +31,9 @@ class RedisLockRepositoryTest extends IntegrationTestSupport {
     void redisUnLock() {
         String lockKey = "test lock key";
         String lockValue = "lock";
+        Long leaseMillisTime = 3000L;
 
-        lockRepository.lock(lockKey, lockValue);
+        lockRepository.lock(lockKey, lockValue, leaseMillisTime);
         String result = lockRepository.get(lockKey);
 
         assertThat(result).isEqualTo(lockValue);
