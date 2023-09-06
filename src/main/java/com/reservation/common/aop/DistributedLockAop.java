@@ -34,17 +34,14 @@ public class DistributedLockAop {
 
         String key = performanceId + requestValue.seatLocation() + requestValue.seatNumber();
 
+        boolean lockAvailable =
+                lockRepository.lock(key, "lock", distributedLock.leaseTime());
+
+        if (!lockAvailable) {
+            throw new AlreadyReservedSeatException();
+        }
+
         try {
-            boolean lockAvailable = lockRepository.lock(
-                    key,
-                    "lock",
-                    distributedLock.leaseTime()
-            );
-
-            if (!lockAvailable) {
-                throw new AlreadyReservedSeatException();
-            }
-
             return aopForTransaction.proceed(joinPoint);
         } catch (Exception e) {
             throw new IllegalArgumentException(e.getMessage());
@@ -52,7 +49,7 @@ public class DistributedLockAop {
             try {
                 lockRepository.unlock(key);
             } catch (IllegalMonitorStateException e) {
-                log.info("Already UnLock {} {}", method.getName(), key);
+                log.error("Already unLock {} {}", method.getName(), key);
             }
         }
     }
