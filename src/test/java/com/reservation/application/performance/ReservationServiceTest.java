@@ -23,7 +23,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -325,5 +329,92 @@ class ReservationServiceTest extends IntegrationTestSupport {
         assertThatThrownBy(() -> reservationService.searchBy(Long.MAX_VALUE, reservationId))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage(String.valueOf(ErrorCode.RESERVATION_NOT_MATCHED_PERFORMANCE));
+    }
+
+//    @Test
+    public void 좌석_동시_접근() throws InterruptedException {
+
+        Place newPlace = new Place("공연장 이름", "공연장 주소", 500);
+        Place savedPlace = placeRepository.save(newPlace);
+
+        LocalDateTime startTime = LocalDateTime.of(2023, 8, 20, 14, 0, 0);
+        LocalDateTime endTime = LocalDateTime.of(2023, 8, 20, 16, 30, 0);
+        LocalDateTime bookingStartDate = LocalDateTime.of(2023, 8, 1, 0, 0, 0);
+        LocalDateTime bookingEndDate = LocalDateTime.of(2023, 8, 19, 23, 59, 59);
+
+        Performance newPerformance = new Performance(
+                savedPlace,
+                Performance.Category.SPORT,
+                startTime,
+                endTime,
+                bookingStartDate,
+                bookingEndDate,
+                "공연 이름",
+                "공연 내용",
+                "출연진",
+                Performance.FilmRating.TWELVE,
+                50000,
+                null,
+                null
+        );
+        Performance savedPerformance = performanceRepository.save(newPerformance);
+        Long performanceId = savedPerformance.getId();
+
+        Seat newSeat = new Seat(performanceId, "A", 1);
+        seatRepository.save(newSeat);
+
+        CreateReservationValue addReservationOfUser2 =
+                new CreateReservationValue(1L, "A", 1);
+        CreateReservationValue addReservationOfUser3 =
+                new CreateReservationValue(2L, "A", 1);
+        CreateReservationValue addReservationOfUser4 =
+                new CreateReservationValue(3L, "A", 1);
+
+        ExecutorService executor = Executors.newFixedThreadPool(3);
+
+        performanceRepository.flush();
+
+        executor.submit(() -> {
+            try {
+                reservationService.create(performanceId, addReservationOfUser2);
+                System.out.println("====> create reservation first user");
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        });
+        executor.submit(() -> {
+            try {
+                reservationService.create(performanceId, addReservationOfUser3);
+                System.out.println("====> create reservation second user");
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        });
+        executor.submit(() -> {
+            try {
+                reservationService.create(performanceId, addReservationOfUser4);
+                System.out.println("====> create reservation third user");
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        });
+
+        executor.shutdown();
+
+        if (executor.awaitTermination(20, TimeUnit.SECONDS)) {
+            System.out.println(LocalTime.now() + " All jobs are terminated");
+        } else {
+            System.out.println(LocalTime.now() + " some jobs are not terminated");
+            executor.shutdownNow();
+        }
+
+        Seat findSeat = seatRepository.findByPerformanceIdAndLocationAndNumber(performanceId, "A", 2)
+                .orElseThrow();
+
+        System.out.println(findSeat.getIsReserved());
+
+        List<Reservation> reservations = reservationRepository.findAll();
+        assertThat(reservations).hasSize(1);
+
     }
 }

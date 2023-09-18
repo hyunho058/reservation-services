@@ -10,16 +10,18 @@ import static org.assertj.core.api.Assertions.assertThat;
 class RedisLockRepositoryTest extends IntegrationTestSupport {
     @Autowired
     private RedisLockRepository lockRepository;
+
     @DisplayName("동일한 key 값 이 존재하면 false를 반환한다.")
     @Test
     void redisLock() {
         //given
         String lockKey = "test lock key";
         String lockValue = "lock";
+        Long leaseMillisTime = 3000L;
 
-        lockRepository.lock(lockKey, lockValue);
+        lockRepository.lock(lockKey, lockValue, leaseMillisTime);
         //when
-        Boolean lockStatus = lockRepository.lock(lockKey, lockValue);
+        Boolean lockStatus = lockRepository.lock(lockKey, lockValue, leaseMillisTime);
         //then
         assertThat(lockStatus).isFalse();
     }
@@ -29,8 +31,9 @@ class RedisLockRepositoryTest extends IntegrationTestSupport {
     void redisUnLock() {
         String lockKey = "test lock key";
         String lockValue = "lock";
+        Long leaseMillisTime = 3000L;
 
-        lockRepository.lock(lockKey, lockValue);
+        lockRepository.lock(lockKey, lockValue, leaseMillisTime);
         String result = lockRepository.get(lockKey);
 
         assertThat(result).isEqualTo(lockValue);
