@@ -5,7 +5,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.concurrent.TimeUnit;
+
 import static org.assertj.core.api.Assertions.assertThat;
+
 
 class RedisLockRepositoryTest extends IntegrationTestSupport {
     @Autowired
@@ -19,9 +22,9 @@ class RedisLockRepositoryTest extends IntegrationTestSupport {
         String lockValue = "lock";
         Long leaseMillisTime = 3000L;
 
-        lockRepository.lock(lockKey, lockValue, leaseMillisTime);
+        lockRepository.lock(lockKey, lockValue, leaseMillisTime, TimeUnit.MILLISECONDS);
         //when
-        Boolean lockStatus = lockRepository.lock(lockKey, lockValue, leaseMillisTime);
+        Boolean lockStatus = lockRepository.lock(lockKey, lockValue, leaseMillisTime, TimeUnit.MILLISECONDS);
         //then
         assertThat(lockStatus).isFalse();
     }
@@ -33,7 +36,7 @@ class RedisLockRepositoryTest extends IntegrationTestSupport {
         String lockValue = "lock";
         Long leaseMillisTime = 3000L;
 
-        lockRepository.lock(lockKey, lockValue, leaseMillisTime);
+        lockRepository.lock(lockKey, lockValue, leaseMillisTime, TimeUnit.MILLISECONDS);
         String result = lockRepository.get(lockKey);
 
         assertThat(result).isEqualTo(lockValue);
