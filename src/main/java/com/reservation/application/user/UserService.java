@@ -49,4 +49,8 @@ public class UserService {
 
         return new UpdateUserResult(user);
     }
+
+    public boolean existssssss(String userId) {
+        return userRepository.exists(userId);
+    }
 }
