@@ -50,6 +50,6 @@ public class UserService {
         return new UpdateUserResult(user);
     }
     public double getRandomNumber() {
-        return Math.random() * 100;
+        return Math.random() * 10;
     }
 }
