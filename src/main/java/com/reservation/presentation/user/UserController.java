@@ -47,6 +47,8 @@ public class UserController {
     @PutMapping("/{id}")
     public SingleResponse<UpdateUserResponse> update(@PathVariable Long id,
                                                      @RequestBody UpdateUserRequest updateUserRequest) {
+        int testtt = 10;
+
         UpdateUserResult updateUserResult = userService.update(id, updateUserRequest.toValue());
 
         return new SingleResponse.Ok<>(

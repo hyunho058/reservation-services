@@ -49,4 +49,10 @@ public class UserService {
 
         return new UpdateUserResult(user);
     }
+    public double getRandomNumber() {
+        int test = 10;
+        double testtt = Math.random() * 10;
+
+        return testtt;
+    }
 }
