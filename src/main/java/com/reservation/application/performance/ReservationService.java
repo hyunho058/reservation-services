@@ -82,4 +82,8 @@ public class ReservationService {
 
         return new SearchReservationResult(reservation);
     }
+
+    public int random() {
+        return (int) (Math.random() * 100);
+    }
 }
