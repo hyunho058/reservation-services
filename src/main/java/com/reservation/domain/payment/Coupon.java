@@ -63,15 +63,19 @@ public class Coupon extends BaseTimeEntity {
         WON
     }
 
-//    public boolean isOverDiscountValue(int value) {
-//        if (Type.PERCENT.equals(this.type)) {
-//            return value > 100;
-//        }
-//        if (Type.WON.equals(this.type)) {
-//            return value > this.performance.getPrice();
-//        }
-//        return false;
-//    }
+    public boolean isOverDiscountValue(int value) {
+        if (Type.PERCENT.equals(this.type)) {
+            return value > 100;
+        }
+        if (Type.WON.equals(this.type)) {
+            return value > this.performance.getPrice();
+        }
+        return false;
+    }
+
+    public boolean isExpired() {
+        return LocalDateTime.now().isAfter(this.expiredAt);
+    }
 
     public Coupon delete() {
         this.expiredAt = LocalDateTime.now();
@@ -105,15 +109,5 @@ public class Coupon extends BaseTimeEntity {
         this.discountValue = discountValue;
         this.usedAt = usedAt;
         this.expiredAt = expiredAt;
-    }
-
-    public boolean isOverDiscountValue(int value) {
-        if (Type.PERCENT.equals(this.type)) {
-            return value > 100;
-        }
-        if (Type.WON.equals(this.type)) {
-            return value > this.performance.getPrice();
-        }
-        return false;
     }
 }
