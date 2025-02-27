@@ -52,6 +52,21 @@ public class CouponService {
 
     }
 
+    public boolean checkkk(Long id){
+        Coupon coupon = couponRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException(ErrorCode.COUPON_NOT_FOUND.name()));
+
+        Integer discountValue = coupon.getDiscountValue();
+        Integer result = discountValue - 100;
+
+        if (coupon.getUsedAt() != null) {
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
     @Transactional
     public UpdateCouponResult update(UpdateCouponValue value) {
         Coupon coupon = couponRepository.findById(value.id())

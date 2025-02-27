@@ -73,6 +73,10 @@ public class Coupon extends BaseTimeEntity {
         return false;
     }
 
+    public boolean isExpired() {
+        return LocalDateTime.now().isAfter(this.expiredAt);
+    }
+
     public Coupon delete() {
         this.expiredAt = LocalDateTime.now();
         return this;
