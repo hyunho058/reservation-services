@@ -56,6 +56,9 @@ public class CouponService {
         Coupon coupon = couponRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException(ErrorCode.COUPON_NOT_FOUND.name()));
 
+        Integer discountValue = coupon.getDiscountValue();
+        Integer result = discountValue - 100;
+
         if (coupon.getUsedAt() != null) {
             return true;
         } else {
